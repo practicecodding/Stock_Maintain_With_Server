@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/purchase"
+        android:icon="@drawable/purchase_icon"
+        android:title="Purchase"
+        />
+
+    <item
+        android:id="@+id/stock"
+        android:icon="@drawable/stock_icon"
+        android:title="Stock"
+        />
+
+    <item
+        android:id="@+id/sell"
+        android:icon="@drawable/sell_icon"
+        android:title="Sell"
+        />
+
+</menu>
