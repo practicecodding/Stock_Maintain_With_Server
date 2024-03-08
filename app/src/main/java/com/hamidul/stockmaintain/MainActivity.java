@@ -14,7 +14,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -23,7 +25,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
     DrawerLayout drawerLayout;
     MaterialToolbar materialToolbar;
     BottomNavigationView bottomNavigationView;
@@ -89,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         toast = Toast.makeText(MainActivity.this,text,Toast.LENGTH_LONG);
         toast.show();
     }
+
+
 
 
 }
