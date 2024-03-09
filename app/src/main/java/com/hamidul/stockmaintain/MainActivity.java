@@ -57,20 +57,20 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 if (menuItem.getItemId()==R.id.stock){
-                    setToast("Stock");
+                    materialToolbar.setTitle("Stock");
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout,new Stock());
                     fragmentTransaction.commit();
                 }
                 else if (menuItem.getItemId()==R.id.sell){
-                    setToast("Sell");
+                    materialToolbar.setTitle("Sell");
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout,new Sell());
                     fragmentTransaction.commit();
                 }else if (menuItem.getItemId()==R.id.purchase){
-                    setToast("Purchase");
+                    materialToolbar.setTitle("Purchase");
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout,new Purchase());

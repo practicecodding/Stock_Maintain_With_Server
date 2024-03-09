@@ -36,13 +36,12 @@ public class Purchase extends Fragment {
 
         tabAdapter = new TabAdapter(getChildFragmentManager());
 
-        tabAdapter.addFragment(new Stock(),"Stock");
-        tabAdapter.addFragment(new Sell(),"Sell");
+        tabAdapter.addFragment(new AddPurchase(),"Purchase Item");
+        tabAdapter.addFragment(new PurchaseDetails(),"Purchase Details");
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(0);
-
 
         return myView;
     }

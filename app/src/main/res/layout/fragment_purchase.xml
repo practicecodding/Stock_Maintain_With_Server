@@ -18,6 +18,7 @@
         app:tabIndicatorFullWidth="true"
         app:tabSelectedTextColor="#00BCD4"
         app:tabTextColor="@color/black"
+        app:tabTextAppearance="@style/MyTabStyle"
         />
 
 
