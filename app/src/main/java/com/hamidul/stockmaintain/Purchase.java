@@ -20,6 +20,7 @@ import android.widget.TableLayout;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Purchase extends Fragment {

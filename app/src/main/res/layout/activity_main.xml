@@ -16,7 +16,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00BCD4"
+            android:background="@color/myColor"
             >
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/materialToolbar"
@@ -26,7 +26,6 @@
                 app:title="Stock"
                 app:titleTextColor="@color/black"
                 app:titleCentered="true"
-                app:navigationIcon="@drawable/menu_icon"
                 />
         </com.google.android.material.appbar.AppBarLayout>
 

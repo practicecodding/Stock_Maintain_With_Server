@@ -3,16 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Stock">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        >
+
+        <TextView
+            android:id="@+id/addSku"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SKU"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Unit"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@color/black"
+        />
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/black"
+        android:layout_margin="20dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Stock"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:scrollbars="none"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp"
         />
 
 </LinearLayout>

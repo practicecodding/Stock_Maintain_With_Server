@@ -14,9 +14,9 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="#00BCD4"
+        app:tabIndicatorColor="@color/myColor"
         app:tabIndicatorFullWidth="true"
-        app:tabSelectedTextColor="#00BCD4"
+        app:tabSelectedTextColor="@color/myColor"
         app:tabTextColor="@color/black"
         app:tabTextAppearance="@style/MyTabStyle"
         />

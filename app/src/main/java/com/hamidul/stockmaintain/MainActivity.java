@@ -18,17 +18,34 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     MaterialToolbar materialToolbar;
     BottomNavigationView bottomNavigationView;
     NavigationView navigationView;
+    HashMap<String,String> hashMap;
     Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frameLayout,new Stock());
         fragmentTransaction.commit();
 
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -71,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                 }else if (menuItem.getItemId()==R.id.purchase){
                     materialToolbar.setTitle("Purchase");
+                    AddPurchase.purchaseList = Stock.stockList;
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout,new Purchase());
@@ -90,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         toast = Toast.makeText(MainActivity.this,text,Toast.LENGTH_LONG);
         toast.show();
     }
-
 
 
 

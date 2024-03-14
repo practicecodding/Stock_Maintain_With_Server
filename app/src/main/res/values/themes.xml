@@ -7,5 +7,13 @@
 
     <style name="Theme.StockMaintain" parent="Base.Theme.StockMaintain" />
 
+    <style name="userCursor" parent="">
+        <item name="colorControlActivated">@color/black</item>
+    </style>
+
+    <style name="cursorColor" parent="">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+    </style>
+
 
 </resources>
