@@ -1,5 +1,6 @@
 package com.hamidul.stockmaintain;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,12 +36,13 @@ public class AddPurchase extends Fragment {
     HashMap<String,String> hashMap;
     RecyclerView recyclerView;
     MyAdapter myAdapter;
-    MyDatabase myDatabase;
+    SQLiteDatabaseHelper sqLiteDatabaseHelper;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_add_purchase, container, false);
 
         recyclerView = myView.findViewById(R.id.recyclerView);
+        sqLiteDatabaseHelper = new SQLiteDatabaseHelper(getActivity());
 
         loadStock();
 
@@ -92,50 +94,30 @@ public class AddPurchase extends Fragment {
     }
 
     public void loadStock(){
-        String url = "https://smhamidulcodding.000webhostapp.com/stock_maintain/stock/view.php";
 
-        JsonArrayRequest jsonArrayRequest  = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray jsonArray) {
+        Cursor cursor = sqLiteDatabaseHelper.getAllStock();
 
-                purchaseList = new ArrayList<>();
+        purchaseList = new ArrayList<>();
 
-                for (int x=0; x<jsonArray.length(); x++){
-                    try {
-                        JSONObject jsonObject = jsonArray.getJSONObject(x);
+        while (cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            String sku = cursor.getString(1);
+            int unit = cursor.getInt(2);
+            double tp = cursor.getDouble(3);
 
-                        String id = jsonObject.getString("id");
-                        String sku = jsonObject.getString("sku");
-                        String unit = String.valueOf(jsonObject.getInt("unit"));
-                        String tp = String.valueOf(jsonObject.getDouble("tp"));
+            hashMap = new HashMap<>();
+            hashMap.put("id", String.valueOf(id));
+            hashMap.put("sku",sku);
+            hashMap.put("unit", String.valueOf(unit));
+            hashMap.put("tp", String.valueOf(tp));
+            purchaseList.add(hashMap);
 
-                        hashMap = new HashMap<>();
-                        hashMap.put("id",id);
-                        hashMap.put("sku",sku);
-                        hashMap.put("unit",unit);
-                        hashMap.put("tp",tp);
-                        purchaseList.add(hashMap);
+        }
 
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                }// end for loop
+        myAdapter = new MyAdapter();
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-                myAdapter = new MyAdapter();
-                recyclerView.setAdapter(myAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-//                progressBar.setVisibility(View.GONE);
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(20*1000,2,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(jsonArrayRequest);
     }
 
 }
