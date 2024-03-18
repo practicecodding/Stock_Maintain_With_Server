@@ -6,53 +6,32 @@
     android:orientation="vertical"
     tools:context=".AddPurchase">
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:clickable="true"-->
-<!--        android:foreground="?attr/selectableItemBackgroundBorderless"-->
-<!--        >-->
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="SKU"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textStyle="bold"-->
-<!--            android:clickable="true"-->
-<!--            android:foreground="?attr/selectableItemBackground"-->
-<!--            />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Unit"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textStyle="bold"-->
-<!--            />-->
-
-
-<!--    </LinearLayout>-->
-
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="1.5dp"-->
-<!--        android:background="@color/black"-->
-<!--        />-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="5dp"
-        />
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_above="@id/button"
+            />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Purchase Now"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>

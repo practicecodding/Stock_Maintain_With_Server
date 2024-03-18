@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentTransaction.commit();
                 }else if (menuItem.getItemId()==R.id.purchase){
                     materialToolbar.setTitle("Purchase");
-                    AddPurchase.purchaseList = Stock.stockList;
+//                    AddPurchase.purchaseList = Stock.stockList;
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout,new Purchase());

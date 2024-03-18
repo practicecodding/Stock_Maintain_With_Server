@@ -3,9 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/custom_add_item"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:background="@drawable/custom_add_item"
     >
 
     <LinearLayout
@@ -13,8 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
         >
 
         <TextView
@@ -30,16 +28,6 @@
             android:textStyle="bold"
             />
 
-        <TextView
-            android:id="@+id/skuUnit"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:gravity="center"
-            android:layout_margin="10dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            />
 
         <EditText
             android:id="@+id/edUnit"
@@ -55,7 +43,6 @@
             android:maxLength="5"
             android:background="@drawable/custom_edittext"
             android:padding="5dp"
-            android:visibility="gone"
             android:theme="@style/cursorColor"
             />
 

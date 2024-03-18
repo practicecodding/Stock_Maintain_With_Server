@@ -34,7 +34,7 @@ public class Stock extends Fragment {
     RecyclerView recyclerView;
     HashMap<String,String> hashMap;
     ProgressBar progressBar;
-    public static ArrayList<HashMap<String,String>> stockList = new ArrayList<>();
+    ArrayList<HashMap<String,String>> stockList = new ArrayList<>();
     SQLiteDatabaseHelper sqLiteDatabaseHelper;
     MyAdapter myAdapter;
 
