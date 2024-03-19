@@ -18,16 +18,17 @@
             android:scrollbars="none"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="5dp"
-            android:layout_above="@id/button"
+            android:layout_below="@id/button"
             />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginTop="10dp"
             android:text="Purchase Now"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/custom_add_item"
             />
 
     </RelativeLayout>

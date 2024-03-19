@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     MaterialToolbar materialToolbar;
     BottomNavigationView bottomNavigationView;
     NavigationView navigationView;
-    HashMap<String,String> hashMap;
     Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +109,18 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (materialToolbar.getTitle().equals("Stock")){
+            super.onBackPressed();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.stock);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frameLayout,new Stock());
+            fragmentTransaction.commit();
+        }
+    }
 
 }
