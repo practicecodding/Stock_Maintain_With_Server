@@ -44,4 +44,18 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public int getStockOldUnit (String id){
+
+        int oldUnit = 0;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from stock where id like '"+id+"' ",null);
+
+        while (cursor.moveToNext()){
+            oldUnit = cursor.getInt(2);
+        }
+
+        return oldUnit;
+    }
+
 }

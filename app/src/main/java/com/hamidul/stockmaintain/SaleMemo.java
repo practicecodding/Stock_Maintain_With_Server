@@ -1,6 +1,5 @@
 package com.hamidul.stockmaintain;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,19 +9,16 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class PurchaseMemo extends Fragment {
+public class SaleMemo extends Fragment {
 
     RecyclerView recyclerView;
     Button button;
@@ -30,10 +26,10 @@ public class PurchaseMemo extends Fragment {
     HashMap<String,String> hashMap;
     MyDatabase myDatabase;
     SQLiteDatabaseHelper sqLiteDatabaseHelper;
-    public static boolean onUpdate = false;
+    Toast toast;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View myView = inflater.inflate(R.layout.fragment_purchase_memo, container, false);
+        View myView = inflater.inflate(R.layout.fragment_sale_memo, container, false);
 
         recyclerView = myView.findViewById(R.id.recyclerView);
         button = myView.findViewById(R.id.button);
@@ -44,20 +40,28 @@ public class PurchaseMemo extends Fragment {
             @Override
             public void onClick(View v) {
 
-                for (int x=0; x<AddPurchase.purchaseUnit.size(); x++){
-                    hashMap = AddPurchase.purchaseUnit.get(x);
+                for (int x=0; x<AddSell.saleUnit.size(); x++){
+                    hashMap = AddSell.saleUnit.get(x);
                     String id = hashMap.get("id");
-                    int unit = Integer.parseInt(hashMap.get("unit")) + sqLiteDatabaseHelper.getStockOldUnit(id);
-                    for (HashMap item : AddPurchase.purchaseUnit){
-                        if (item.get("id").equals(id)){
-                            myDatabase.updateStock(id,unit);
+                    String sku = hashMap.get("sku");
+                    int unit = sqLiteDatabaseHelper.getStockOldUnit(id) - Integer.parseInt(hashMap.get("unit"));
+
+                    if (unit<0){
+                        Toast.makeText(getActivity(), sku+"\nStock Not Available", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        for (HashMap item : AddSell.saleUnit){
+                            if (item.get("id").equals(id)){
+                                myDatabase.updateStock(id,unit);
+                            }
                         }
                     }
+
                 }
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout,new Purchase());
+                fragmentTransaction.replace(R.id.frameLayout,new Sell());
                 fragmentTransaction.commit();
 
             }
@@ -69,7 +73,6 @@ public class PurchaseMemo extends Fragment {
 
         return myView;
     }
-
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
@@ -84,7 +87,7 @@ public class PurchaseMemo extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
-            hashMap = AddPurchase.purchaseUnit.get(position);
+            hashMap = AddSell.saleUnit.get(position);
             String id = hashMap.get("id");
             String sku = hashMap.get("sku");
             String unit = hashMap.get("unit");
@@ -97,7 +100,7 @@ public class PurchaseMemo extends Fragment {
 
         @Override
         public int getItemCount() {
-            return AddPurchase.purchaseUnit.size();
+            return AddSell.saleUnit.size();
         }
 
         public class myViewHolder extends RecyclerView.ViewHolder{
@@ -111,5 +114,13 @@ public class PurchaseMemo extends Fragment {
             }
         }
     }
+
+    private void setToast(String text){
+        if (toast!=null) toast.cancel();
+        toast = Toast.makeText(getActivity(),text,Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+
 
 }

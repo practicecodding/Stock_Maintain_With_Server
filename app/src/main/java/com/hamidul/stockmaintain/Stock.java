@@ -34,7 +34,7 @@ public class Stock extends Fragment {
     RecyclerView recyclerView;
     HashMap<String,String> hashMap;
     ProgressBar progressBar;
-    ArrayList<HashMap<String,String>> stockList = new ArrayList<>();
+    public static ArrayList<HashMap<String,String>> stockList = new ArrayList<>();
     SQLiteDatabaseHelper sqLiteDatabaseHelper;
     MyAdapter myAdapter;
 
@@ -143,7 +143,6 @@ public class Stock extends Fragment {
 
             holder.skuName.setText(sku);
             holder.skuUnit.setText(unit);
-
 
         }
 

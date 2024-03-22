@@ -1,64 +1,226 @@
 package com.hamidul.stockmaintain;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddSell#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class AddSell extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AddSell() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddSell.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddSell newInstance(String param1, String param2) {
-        AddSell fragment = new AddSell();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    ArrayList<HashMap<String,String>> saleList = new ArrayList<>();
+    public static ArrayList<HashMap<String,String>> saleUnit = new ArrayList<>();
+    HashMap<String,String> hashMap;
+    RecyclerView recyclerView;
+    MyAdapter myAdapter;
+    SQLiteDatabaseHelper sqLiteDatabaseHelper;
+    Button button;
+    Toast toast;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View myView = inflater.inflate(R.layout.fragment_add_sell, container, false);
+
+        recyclerView = myView.findViewById(R.id.recyclerView);
+        button = myView.findViewById(R.id.button);
+        sqLiteDatabaseHelper = new SQLiteDatabaseHelper(getActivity());
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (saleUnit.size()>0){
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout,new SaleMemo());
+                    fragmentTransaction.commit();
+                    View view = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }else {
+                    setToast("Please Input Quantity");
+                }
+
+            }
+        });
+
+        saleUnit = new ArrayList<>();
+
+        loadStock();
+
+        return myView;
+    }
+
+
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
+
+        @NonNull
+        @Override
+        public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = getLayoutInflater();
+            View myView = inflater.inflate(R.layout.add_item,parent,false);
+            return new myViewHolder(myView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+
+            hashMap = saleList.get(position);
+            String id = hashMap.get("id");
+            String sku = hashMap.get("sku");
+            String unit = hashMap.get("unit");
+
+            holder.skuName.setText(sku);
+
+            holder.edUnit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    String string = holder.edUnit.getText().toString();
+
+                    if (!string.isEmpty()){
+
+                        if (saleUnit.size()>0){
+
+                            String mID = "";
+
+                            for (int x=0; x<saleUnit.size(); x++){
+                                HashMap has = saleUnit.get(x);
+                                mID = (String) has.get("id");
+                                if (mID.equals(id)){
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        has.replace("unit",string);
+                                    }
+                                    break;
+                                }// (mID.equals(id))
+
+                            }// end for loop
+
+                            if (!mID.equals(id)){
+                                hashMap = new HashMap<>();
+                                hashMap.put("id",id);
+                                hashMap.put("sku",sku);
+                                hashMap.put("unit",string);
+                                saleUnit.add(hashMap);
+                            } // (!mID.equals(id))
+
+
+                        }// (purchase.size()>0)
+                        else {
+                            hashMap = new HashMap<>();
+                            hashMap.put("id",id);
+                            hashMap.put("sku",sku);
+                            hashMap.put("unit",string);
+                            saleUnit.add(hashMap);
+                        }
+
+                    }// (!string.isEmpty())
+                    else {
+
+                        for (int x=0; x<saleUnit.size(); x++){
+                            HashMap hashMap1 = saleUnit.get(x);
+                            String id1 = (String) hashMap1.get("id");
+                            if (id1.equals(id)){
+                                saleUnit.remove(x);
+                            }// (id1.equals(id))
+
+                        }// end for loop
+                    }
+
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                    String string = s.toString();
+
+                    if (!string.isEmpty() && string.startsWith("0")){
+                        s.delete(0,1);
+                    }
+
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return saleList.size();
+        }
+
+        public class myViewHolder extends RecyclerView.ViewHolder{
+            TextView skuName;
+            EditText edUnit;
+            public myViewHolder(@NonNull View itemView) {
+                super(itemView);
+
+                skuName = itemView.findViewById(R.id.skuName);
+                edUnit = itemView.findViewById(R.id.edUnit);
+
+            }
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_sell, container, false);
+    public void loadStock(){
+
+        Cursor cursor = sqLiteDatabaseHelper.getAllStock();
+
+        saleList = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            String sku = cursor.getString(1);
+            int unit = cursor.getInt(2);
+            double tp = cursor.getDouble(3);
+
+            hashMap = new HashMap<>();
+            hashMap.put("id", String.valueOf(id));
+            hashMap.put("sku",sku);
+            hashMap.put("unit", String.valueOf(unit));
+            hashMap.put("tp", String.valueOf(tp));
+            saleList.add(hashMap);
+
+        }
+
+        myAdapter = new MyAdapter();
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
+
+    private void setToast(String text){
+        if (toast!=null) toast.cancel();
+        toast = Toast.makeText(getActivity(),text,Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+
 }

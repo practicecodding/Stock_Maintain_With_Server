@@ -234,4 +234,5 @@ public class AddPurchase extends Fragment {
         toast = Toast.makeText(getActivity(),text,Toast.LENGTH_SHORT);
         toast.show();
     }
+
 }
