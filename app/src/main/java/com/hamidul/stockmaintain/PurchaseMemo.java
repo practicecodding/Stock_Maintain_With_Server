@@ -30,7 +30,6 @@ public class PurchaseMemo extends Fragment {
     HashMap<String,String> hashMap;
     MyDatabase myDatabase;
     SQLiteDatabaseHelper sqLiteDatabaseHelper;
-    public static boolean onUpdate = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_purchase_memo, container, false);
@@ -54,10 +53,10 @@ public class PurchaseMemo extends Fragment {
                         }
                     }
                 }
-
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.stock);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout,new Purchase());
+                fragmentTransaction.replace(R.id.frameLayout,new Stock());
                 fragmentTransaction.commit();
 
             }

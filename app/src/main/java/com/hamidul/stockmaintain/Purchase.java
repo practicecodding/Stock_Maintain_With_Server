@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class Purchase extends Fragment {
 
     TabLayout tabLayout;
-    ViewPager viewPager;
+    public static ViewPager viewPager;
     TabAdapter tabAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class Purchase extends Fragment {
 
         tabLayout = myView.findViewById(R.id.tabLayout);
         viewPager = myView.findViewById(R.id.viewPager);
-
         tabAdapter = new TabAdapter(getChildFragmentManager());
 
         tabAdapter.addFragment(new AddPurchase(),"Purchase Item");

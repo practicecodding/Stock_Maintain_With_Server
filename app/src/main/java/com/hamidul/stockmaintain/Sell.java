@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class Sell extends Fragment {
     TabLayout tabLayout;
-    ViewPager viewPager;
+    public static ViewPager viewPager;
     MyTabAdapter myTabAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

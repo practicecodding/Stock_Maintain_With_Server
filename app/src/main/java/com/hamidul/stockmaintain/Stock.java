@@ -1,6 +1,7 @@
 package com.hamidul.stockmaintain;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,29 +47,53 @@ public class Stock extends Fragment {
         progressBar = myView.findViewById(R.id.progressBar);
         sqLiteDatabaseHelper = new SQLiteDatabaseHelper(getActivity());
 
+        updateStock();
         viewStock();
 
         return myView;
     }
 
+    public void viewStock(){
+
+        stockList = new ArrayList<>();
+
+        Cursor cursor = sqLiteDatabaseHelper.getAllStock();
+
+        while (cursor.moveToNext()){
+            String sku = cursor.getString(1);
+            String unit = String.valueOf(cursor.getInt(2));
+            hashMap = new HashMap<>();
+            hashMap.put("sku",sku);
+            hashMap.put("unit",unit);
+            stockList.add(hashMap);
+        }
+
+        myAdapter = new MyAdapter();
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+    }
+
     @Override
     public void onPause() {
         super.onPause();
+        updateStock();
         viewStock();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        updateStock();
         viewStock();
     }
 
 
-    public void viewStock(){
+    public void updateStock(){
 
-        stockList = new ArrayList<>();
-
-        progressBar.setVisibility(View.VISIBLE);
+        if (MainActivity.firstTime){
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         String url = "https://smhamidulcodding.000webhostapp.com/stock_maintain/stock/view.php";
 
@@ -77,8 +102,9 @@ public class Stock extends Fragment {
             public void onResponse(JSONArray jsonArray) {
 
                 progressBar.setVisibility(View.GONE);
+                MainActivity.firstTime = false;
 
-                stockList = new ArrayList<>();
+//                stockList = new ArrayList<>();
                 sqLiteDatabaseHelper.ClearTable();
 
                 for (int x=0; x<jsonArray.length(); x++){
@@ -90,12 +116,12 @@ public class Stock extends Fragment {
                         int unit = jsonObject.getInt("unit");
                         double tp = jsonObject.getDouble("tp");
 
-                        hashMap = new HashMap<>();
-                        hashMap.put("id", String.valueOf(id));
-                        hashMap.put("sku",sku);
-                        hashMap.put("unit", String.valueOf(unit));
-                        hashMap.put("tp", String.valueOf(tp));
-                        stockList.add(hashMap);
+//                        hashMap = new HashMap<>();
+//                        hashMap.put("id", String.valueOf(id));
+//                        hashMap.put("sku",sku);
+//                        hashMap.put("unit", String.valueOf(unit));
+//                        hashMap.put("tp", String.valueOf(tp));
+//                        stockList.add(hashMap);
 
                         sqLiteDatabaseHelper.InsertStock(id,sku,unit,tp);
 
@@ -104,9 +130,10 @@ public class Stock extends Fragment {
                     }
                 }// end for loop
 
-                myAdapter = new MyAdapter();
-                recyclerView.setAdapter(myAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                viewStock();
+//                myAdapter = new MyAdapter();
+//                recyclerView.setAdapter(myAdapter);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
             }
         }, new Response.ErrorListener() {
@@ -137,7 +164,6 @@ public class Stock extends Fragment {
 
             HashMap hashMap = stockList.get(position);
 
-            String id = (String) hashMap.get("id");
             String sku = (String) hashMap.get("sku");
             String unit = (String) hashMap.get("unit");
 

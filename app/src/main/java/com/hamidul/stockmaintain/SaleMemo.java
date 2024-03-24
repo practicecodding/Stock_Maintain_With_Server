@@ -58,10 +58,10 @@ public class SaleMemo extends Fragment {
                     }
 
                 }
-
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.stock);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout,new Sell());
+                fragmentTransaction.replace(R.id.frameLayout,new Stock());
                 fragmentTransaction.commit();
 
             }

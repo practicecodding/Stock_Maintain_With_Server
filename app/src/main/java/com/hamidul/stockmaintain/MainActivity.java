@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -55,10 +58,11 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     MaterialToolbar materialToolbar;
-    BottomNavigationView bottomNavigationView;
+    public static BottomNavigationView bottomNavigationView;
     BroadcastReceiver broadcastReceiver;
     Toast toast;
     Dialog dialog;
+    public static boolean firstTime = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         materialToolbar = findViewById(R.id.materialToolbar);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        firstTime = true;
 
         broadcastReceiver = new InternetConnection();
         registerReceiver();
