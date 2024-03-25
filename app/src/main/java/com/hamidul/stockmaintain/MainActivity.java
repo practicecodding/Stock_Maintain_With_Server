@@ -11,12 +11,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     Toast toast;
     Dialog dialog;
     public static boolean firstTime = true;
+    boolean skuDiffer = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,12 +147,56 @@ public class MainActivity extends AppCompatActivity {
                     EditText edSKU = d.findViewById(R.id.edSKU);
                     EditText edUnit = d.findViewById(R.id.edUnit);
                     EditText edTP = d.findViewById(R.id.edTP);
+                    Button button = d.findViewById(R.id.button);
+
 
                     d.show();
                     d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                     d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                     d.getWindow().setWindowAnimations(R.style.DialogAnimation);
                     d.getWindow().setGravity(Gravity.BOTTOM);
+
+                    TextWatcher watcher = new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            String sku = edSKU.getText().toString();
+                            String unit = edUnit.getText().toString();
+                            String tp = edTP.getText().toString();
+
+                            for (HashMap item : Stock.stockList){
+                                if (item.get("sku").equals(sku)){
+                                    skuLayout.setError("This SKU Already Exists");
+                                    skuDiffer = false;
+                                    break;
+                                }else {
+                                    skuLayout.setError(null);
+                                    skuLayout.setErrorEnabled(false);
+                                    skuDiffer = true;
+                                }
+
+                            }//for loop end
+
+                            button.setEnabled(!sku.isEmpty() && !unit.isEmpty() && !tp.isEmpty() && skuDiffer);
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            String string = s.toString();
+                            if ( !string.isEmpty() && string.startsWith("0") ){
+                                s.delete(0,1);
+                            }
+                        }
+                    };
+
+                    edSKU.addTextChangedListener(watcher);
+                    edUnit.addTextChangedListener(watcher);
+                    edTP.addTextChangedListener(watcher);
 
                 }
 

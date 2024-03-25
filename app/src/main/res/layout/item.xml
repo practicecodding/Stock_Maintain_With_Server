@@ -88,7 +88,7 @@
         tools:ignore="SpeakableTextPresentCheck"
         android:background="@drawable/custom_button"
         android:textColor="@drawable/button_text_color"
-        android:enabled="true"
+        android:enabled="false"
         android:text="Save"
         />
 
