@@ -11,9 +11,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -47,6 +51,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,12 +90,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frameLayout,new Stock());
         fragmentTransaction.commit();
 
+        //=================================================================================================
+
         dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.no_internet);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.MATCH_PARENT);
         dialog.setCancelable(false);
 
+        //==================================================================================================
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -120,7 +128,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //=================================================================================================
 
+        materialToolbar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                if (materialToolbar.getTitle().equals("Purchase")){
+                    final Dialog d = new Dialog(MainActivity.this);
+                    d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    d.setContentView(R.layout.item);
+
+                    TextInputLayout skuLayout = d.findViewById(R.id.skuLayout);
+                    EditText edSKU = d.findViewById(R.id.edSKU);
+                    EditText edUnit = d.findViewById(R.id.edUnit);
+                    EditText edTP = d.findViewById(R.id.edTP);
+
+                    d.show();
+                    d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                    d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    d.getWindow().setWindowAnimations(R.style.DialogAnimation);
+                    d.getWindow().setGravity(Gravity.BOTTOM);
+
+                }
+
+                return false;
+            }
+        });
 
     }
 
