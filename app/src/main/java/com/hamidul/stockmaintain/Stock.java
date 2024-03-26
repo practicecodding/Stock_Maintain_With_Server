@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ public class Stock extends Fragment {
     public static ArrayList<HashMap<String,String>> stockList = new ArrayList<>();
     SQLiteDatabaseHelper sqLiteDatabaseHelper;
     MyAdapter myAdapter;
+    Toast toast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,6 +70,12 @@ public class Stock extends Fragment {
             stockList.add(hashMap);
         }
 
+        if (stockList.size()==0){
+            progressBar.setVisibility(View.VISIBLE);
+        }else {
+            progressBar.setVisibility(View.GONE);
+        }
+
         myAdapter = new MyAdapter();
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -92,9 +100,9 @@ public class Stock extends Fragment {
 
     public void updateStock(){
 
-        if (MainActivity.firstTime){
-            progressBar.setVisibility(View.VISIBLE);
-        }
+//        if (MainActivity.firstTime){
+//            progressBar.setVisibility(View.VISIBLE);
+//        }
 
         String url = "https://smhamidulcodding.000webhostapp.com/stock_maintain/stock/view.php";
 
@@ -102,8 +110,9 @@ public class Stock extends Fragment {
             @Override
             public void onResponse(JSONArray jsonArray) {
 
-                progressBar.setVisibility(View.GONE);
-                MainActivity.firstTime = false;
+//                progressBar.setVisibility(View.GONE);
+//                MainActivity.firstTime = false;
+
 
 //                stockList = new ArrayList<>();
                 sqLiteDatabaseHelper.ClearTable();
@@ -191,5 +200,10 @@ public class Stock extends Fragment {
 
     }
 
+    public void setToast(String text){
+        if (toast!=null) toast.cancel();
+        toast = Toast.makeText(getActivity(),text,Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
 }

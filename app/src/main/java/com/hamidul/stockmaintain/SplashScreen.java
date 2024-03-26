@@ -23,6 +23,7 @@ public class SplashScreen extends AppCompatActivity {
     CardView logo;
     TextView name;
     Animation Splash_top,Splash_bottom;
+    public static boolean onSplash = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,17 +40,25 @@ public class SplashScreen extends AppCompatActivity {
         logo.setAnimation(Splash_top);
         name.setAnimation(Splash_bottom);
 
-        Handler handler = new Handler();
+        if (onSplash){
+            startActivity(new Intent(SplashScreen.this,MainActivity.class));
+            finish();
+        }else {
+            Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashScreen.this,MainActivity.class));
-                finish();
-            }
-        },1500);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SplashScreen.this,MainActivity.class));
+                    finish();
+                }
+            },1500);
+        }
 
 
 
     }
+
+
+
 }

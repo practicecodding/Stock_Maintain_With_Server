@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main);
 
+        SplashScreen.onSplash = true;
+
         materialToolbar = findViewById(R.id.materialToolbar);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -150,12 +152,6 @@ public class MainActivity extends AppCompatActivity {
                     Button button = d.findViewById(R.id.button);
 
 
-                    d.show();
-                    d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-                    d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                    d.getWindow().setWindowAnimations(R.style.DialogAnimation);
-                    d.getWindow().setGravity(Gravity.BOTTOM);
-
                     TextWatcher watcher = new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
                             String tp = edTP.getText().toString();
 
                             for (HashMap item : Stock.stockList){
-                                if (item.get("sku").equals(sku)){
+                                String itemSku = (String) item.get("sku");
+                                if (itemSku.replaceAll("\\s","").toLowerCase().equals(sku.replaceAll("\\s","").toLowerCase())){
                                     skuLayout.setError("This SKU Already Exists");
                                     skuDiffer = false;
                                     break;
@@ -197,6 +194,52 @@ public class MainActivity extends AppCompatActivity {
                     edSKU.addTextChangedListener(watcher);
                     edUnit.addTextChangedListener(watcher);
                     edTP.addTextChangedListener(watcher);
+
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            d.cancel();
+
+                            String sku = edSKU.getText().toString();
+                            String  unit = edUnit.getText().toString();
+                            String tp = edTP.getText().toString();
+
+                            String url = "https://smhamidulcodding.000webhostapp.com/stock_maintain/stock/insert.php?s="+sku+"&u="+unit+"&t="+tp;
+
+                            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String s) {
+
+                                    setToast("new sku added successfully");
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                }
+                            });
+
+                            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+                            requestQueue.add(stringRequest);
+
+                            bottomNavigationView.setSelectedItemId(R.id.stock);
+                            FragmentManager fragmentManager = getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.frameLayout,new Stock());
+                            fragmentTransaction.commit();
+
+                        }
+
+
+                    });
+
+                    d.show();
+                    d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                    d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    d.getWindow().setWindowAnimations(R.style.DialogAnimation);
+                    d.getWindow().setGravity(Gravity.BOTTOM);
 
                 }
 
@@ -226,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
             if (isConnected()){
-                setToast("Internet Connect");
                 dialog.cancel();
                 bottomNavigationView.setSelectedItemId(R.id.stock);
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -235,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
             }
             else {
-                setToast("No Internet");
                 dialog.show();
             }
         }
